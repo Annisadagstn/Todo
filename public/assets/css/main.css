@@ -2,7 +2,7 @@
 
 body{
     /* background-color: #eee; */
-    background-image: url(../img/bg.jpg);
+    background-image: url(../img/bg-1.jpg);
     background-size: cover;
     font-family: "Poppins", sans-serif;
     font-weight: 300;
@@ -17,7 +17,7 @@ body{
 
 .logo i {
     font-size: 3rem;
-    color: #665A48;
+    color: #050404;
 }
 
 .form-input input{
@@ -48,13 +48,13 @@ body{
     width:50px;
     font-size:29px;
     color:#fff;
-    background-color:#749F82;
+    background-color:#000000;
     border-radius:50%;
     transition:all 0.5s;
 }
 
 .go-button:hover{
-    background-color:#C8DBBE;
+    background-color:#5832ef;
 }
 
 /* list card */
@@ -71,14 +71,14 @@ body{
 .fa-check{
     font-size: 0.9rem;
     border-radius: 50%;
-    border: 2px solid #9ab3f5;
-    color: #9ab3f5;
+    border: 2px solid  #4a28c6;
+    color: #4a28c6;
     padding: 8px 12px;
 }
 .fa-info:hover,
 .fa-check:hover {
-    border: 2px solid #809ff5;
-    color: #809ff5;
+    border: 2px solid #4123eb;
+    color: #4123eb;
 }
 .h5{
     font-weight: 900;
@@ -123,7 +123,7 @@ p.text-muted{
 }
 .comment:hover .fa-arrow-right,
 .comment:hover .fa-undo{
-    color: #2196F3;
+    color: #12cd5a;
 }
 
 /* checkbox */
@@ -158,7 +158,7 @@ p.text-muted{
 }
 .option input:checked ~ .checkmark {
     border: none;
-    background-color: #2196F3;
+    background-color: #361bc1;
 }
 .checkmark:after {
     content: "\2713";
@@ -191,8 +191,8 @@ p.text-muted{
     .fa-check{
         font-size: 0.6rem;
         border-radius: 50%;
-        border: 2px solid #9ab3f5;
-        color: #9ab3f5;
+        border: 2px solid #5f2ac9;
+        color: #5f2ac9;
         padding: 3px 5px;
     }
     .info.btn{
@@ -250,7 +250,7 @@ fieldset {
 #create-form input:hover,
 #create-form textarea:hover {
     transition: border-color 0.3s ease-in-out;
-    border: 1px solid #aaa;
+    border: 1px solid rgb(36, 75, 215);
 }
   
 #create-form textarea {
@@ -272,7 +272,7 @@ fieldset {
 }
  
 #create-form button[type="submit"] {
-    background: #2caf74ea;
+    background: #543cddea;
 }
 
 .btn-cancel {
@@ -302,7 +302,7 @@ fieldset {
 .navbar {
     padding: 0px;
     border-bottom: 1px solid #e6e6f2;
-    box-shadow: 0px 0px 28px 0px rgba(82, 63, 105, 0.13);
+    box-shadow: 0px 0px 28px 0px rgba(0, 0, 0, 0.13);
     min-height: 60px;
 }
 
@@ -315,7 +315,7 @@ fieldset {
     font-size: 20px;
     text-transform: uppercase;
     font-weight: 700;
-    color: #665A48;
+    color: #2519d1;
 }
 
 .navbar-right-top .nav-item {
@@ -330,7 +330,7 @@ fieldset {
     padding: 13px 20px;
     font-size: 16px;
     line-height: 2;
-    color: #82849f;
+    color: #2d39e6;
 }
 
 .nav-user-dropdown {
@@ -340,7 +340,7 @@ fieldset {
 }
 
 .nav-user-info {
-    background-color: #665A48;
+    background-color: #000000;
     line-height: 1.4;
     padding: 12px;
     color: #fff;
@@ -360,7 +360,7 @@ fieldset {
     padding: 12px 22px 15px;
     clear: both;
     font-weight: 400;
-    color: #686972;
+    color: #000000;
     text-align: inherit;
     white-space: nowrap;
     background-color: transparent;

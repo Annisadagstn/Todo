@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class TodoController extends Controller
 {
@@ -77,16 +78,36 @@ class TodoController extends Controller
     public function index()
     {
         //menampilkan halaman awal, semua data
-        // ambil semua data todo dari database
-        $todos = Todo::all();
+        // cari data todo yang punya user_id nya sama dengan id orang yg login kalau ketemu datanya diambil 
+        $todos = Todo::where([
+            ['user_id', '=', Auth::user()->id], 
+            ['status', '=', 0],
+        ])->get();
         //tampilin file index di folder dashboard dan bawa data dari variable yang namanya todos ke fil tersebut
         return view('dashboard.index', compact('todos'));
     }
 
     public function complated()
     {
-        return view('dashboard.complated');
+        $todos = Todo::where([
+            ['user_id', '=', Auth::user()->id], 
+            ['status', '=', 1],
+        ])->get();
+        return view('dashboard.complated', compact('todos'));
     }
+
+    public function updateComplated($id)
+    {
+        //$id pada parameter mengambil data dari path dinamis {id}
+        // cari data yang memiliki value column id sama dengan data id yang dikirim ke route, maka update baris data tersebut
+        Todo::where('id',$id)->update([
+            'status' => 1,
+            'done_time' => Carbon::now(),
+        ]);
+        // kalau berhasil bakal diarahin ke halaman list todo yg complated dengan pemberitahuan
+        return redirect()->route('todo.complated')->with('done', 'Todo sudah selesai dikerjakan!');
+    }
+
     public function create()
     {
         //menampilkan halaman input form tambah data
@@ -137,9 +158,12 @@ class TodoController extends Controller
      * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Todo $todo)
+    public function edit($id)
     {
         //menampilkan form edit data
+        $todo = Todo::where('id', $id)->first();
+        //lalu tampilkan halaman dari view edit dengan mengirim data yg ada di variable todo
+        return view('dashboard.edit', compact('todo'));
     }
 
     /**
@@ -149,10 +173,26 @@ class TodoController extends Controller
      * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Todo $todo)
+    public function update(Request $request,  $id)
     {
-        //mengubah data di database
-    }
+      //mengirim data ke database (data baru) / menambahkan data baru ke db
+            //validasi
+            $request->validate([
+                'title' => 'required|min:3',
+                'date' => 'required',
+                'description' => 'required|min:8',
+            ]);
+            // update data yg id nya sama dengan id dari route, updatenya ke db bagian table todos
+            Todo::where('id', $id)->update([
+                'title' => $request->title,
+                'description' => $request->description, 
+                'date' => $request->date, 
+                'status' => 0,
+                'user_id' => Auth::user()->id,
+            ]);
+            // kalau berhasil bakal diarahin ke halaman awal todo dengan pemberitahuan berhasil
+            return redirect('/todo/')->with('succesupdate', 'Data berhasil diperbarui!');
+         }
 
     /**
      * Remove the specified resource from storage.
@@ -160,8 +200,13 @@ class TodoController extends Controller
      * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Todo $todo)
+    public function destroy($id)
     {
-        //menghapus data dari database
+        //parameter $id akan mengambil data dari path dinamis {id}
+        //cari data yang isian column id nya sama dengan $id yang dikirim ke path dinamis
+        //kalau ada, ambil terus hapus datanya
+        Todo::where('id', '=', $id)->delete();
+        //kalau berhasil, bakal dibalikin ke halaman list todo dengan pemberitahuan 
+        return redirect()->route('todo.index')->with('successDelete', 'Berhasil menghapus data Todo!');
     }
 }

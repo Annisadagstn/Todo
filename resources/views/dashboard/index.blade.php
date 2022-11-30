@@ -12,6 +12,11 @@
             {{ Session::get('successAdd') }}
         </div>
     @endif
+    @if (Session::get('successupdate'))
+    <div class="alert alert-success">
+        {{ Session::get('successupdate') }}
+    </div>
+@endif
     <div class="d-flex align-items-start justify-content-between">
         <div class="d-flex flex-column">
             <div class="h5">My Todo's</div>
@@ -20,7 +25,7 @@
             </p>
             <br>
             <span>
-                <a href="{{route('todo.create')}}" class="text-success">Create</a> | <a href="{{route('todo.complated')}}">Complated</a>
+                <a href="{{route('todo.create')}}" class="text-success">Create</a> | <a href="{{route('todo.complated')}} " class="text-success">complated</a>
             </span>
         </div>
         <div class="info btn ml-md-4 ml-0">
@@ -32,7 +37,8 @@
             <div>
                 <span class="text-muted fas fa-comment btn"></span>
             </div>
-            <div class="text-muted">2 todos</div>
+            <div class="text-muted">{{ !is_null($todos) ? count($todos) : '-' }}
+            complate todos</div>
             <button class="ml-auto btn bg-white text-muted fas fa-angle-down" type="button" data-toggle="collapse"
                 data-target="#comments" aria-expanded="false" aria-controls="comments"></button>
         </div>
@@ -42,19 +48,36 @@
             
         <div class="comment d-flex align-items-start justify-content-between">
             <div class="mr-2">
-                <label class="option">
+                <form action="/todo/complated/{{$todo['id']}}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="fas fa-check" style="background: #B9E0FF; padding: 8px !import;"></button>
+                </form>
+                {{-- <label class="option">
                     <input type="checkbox">
                     <span class="checkmark"></span>
-                </label>
+                </label> --}}
             </div>
             <div class="d-flex flex-column w-75">
-                <b class="text-justify">
+                <a href="/todo/edit/{{$todo['id']}}" class="text-justify font-weight">
+                    
                     {{ $todo['title']}}
                 </b>
-                <p class="text-muted">{{ $todo['status'] ? 'Complated' : 'On-Progress' }} <span class="date">Nov 23, 2022</span></p>
+                <p class="text-muted">{{ $todo['status'] ? 'Complated' : 'On-Progress' }} <span class="date">{{\Carbon\Carbon::parse ($todo['date'])->format('j F, Y') }}</span></p>
             </div>
             <div class="ml-auto">
-                <span class="fas fa-arrow-right btn"></span>
+                     {{-- Ketika akan membuat fitur delete, harus menggunakan form. Karenakalau kita jalanin fitur delete itu kan harus
+                    artinya mau ubah di database nya kan? kalau hal-hal yg menghubungkan dengan modofikasi database harus menggunakan form --}}
+                    <form action="{{route('todo.delete', $todo['id'])}}" method="POST">
+                        @csrf 
+                        {{--- menimpa attribute method="POST" pada form agar menjadi delete, karena di method route nya menggunakan delete --}}
+                        @method('DELETE') 
+                        {{--- biar action form nya bisa dijalankan, button nya harus type submit --}}
+                        <button class="fas fa-trash text-danger btn"></button>
+                    </form>
+                    {{-- <span class="fas fa-arrow-right btn"></span> --}}
+                </div>
+                {{-- <span class="fas fa-arrow-right btn"></span> --}}
             </div>
         </div>
         @endforeach
